@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="movie-poster" v-bind:style="{backgroundImage: `url(${movieData.data.poster})`}">
+  <div v-if="movieData" class="container">
+    <div class="movie-poster" v-bind:style="{backgroundImage: `url(${movieData.data.poster}`}">
       <div class="play-wrapper">
         <div class="play"></div>
       </div>
@@ -21,7 +21,7 @@
       </mdb-col>
     </mdb-row>
     <div class="container">
-      <MovieInfo/>
+      <MovieInfo v-bind:movie="movieData"/>
     </div>
   </div>
 </template>
