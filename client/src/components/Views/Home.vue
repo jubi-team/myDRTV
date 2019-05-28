@@ -1,16 +1,20 @@
 <template>
   <div>
     <h3>Movies</h3>
-    <MediaCarousel/>
+    <MediaCarousel class="mb-4"/>
+    <SignupAd class="mb-4"/>
+    <MediaCarousel class="mb-4"/>
   </div>
 </template>
 
 <script>
 import MediaCarousel from "../Media/MediaCarousel";
+import SignupAd from "../Components/SignupAd";
 export default {
   name: "Home",
   components: {
-    MediaCarousel
+    MediaCarousel,
+    SignupAd
   },
 
   created() {
