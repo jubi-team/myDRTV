@@ -89,11 +89,44 @@ app.post("/user", async (request, response) => {
   }
 });
 
-app.get("/user", async (request, response) => {
+app.get("/users/:email", async (request, response) => {
+  try {
+    const sEmail = request.params.email;
+
+    if (!sEmail) {
+      response.send("Email is required")
+    };
+
+    const user = await db
+      .collection("users")
+      .where('email', '==', sEmail)
+      .get();
+
+    if (!user) {
+      response.send("User doesnt exist.");
+    }
+    user.forEach(function(doc) {
+      // response.send(doc)
+      response.json({
+        id: doc.id,
+        data: doc.data()
+      });
+    });
+
+    // response.json({
+    //   data: user.docs
+    // });
+
+  } catch (error) {
+    response.status(500).send(error);
+  }
+});
+
+app.get("/users", async (request, response) => {
   try {
     const usersCollection = await db.collection("users").get();
 
-    let users: any = [];
+    const users: any = [];
     usersCollection.forEach(doc => {
       users.push({
         id: doc.id,
@@ -103,7 +136,6 @@ app.get("/user", async (request, response) => {
 
     response.json(users);
 
-    users.file;
     response.end();
   } catch (error) {
     response.status(500).send(error);
