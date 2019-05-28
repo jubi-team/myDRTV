@@ -1,10 +1,11 @@
 <template>
   <div v-if="movieData" class="container">
-    <div class="movie-poster" v-bind:style="{backgroundImage: `url(${movieData.data.poster}`}">
+    <div class="movie-poster mb-4" v-bind:style="{backgroundImage: `url(${movieData.data.poster}`}">
       <div class="play-wrapper">
         <div class="play"></div>
       </div>
     </div>
+    <SignupAd class="mb-4"/>
     <mdb-row class="movie-details-header">
       <mdb-col md="8">
         <h1 class="movie-title">{{movieData.data.title}}</h1>
@@ -28,6 +29,7 @@
 
 <script>
 import MovieInfo from "../Media/MovieInfo";
+import SignupAd from "../Components/SignupAd";
 import {
   mdbContainer,
   mdbRow,
@@ -51,7 +53,8 @@ export default {
     mdbCardUp,
     mdbAvatar,
     mdbIcon,
-    MovieInfo
+    MovieInfo,
+    SignupAd
   },
   data() {
     return {

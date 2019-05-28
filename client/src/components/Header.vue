@@ -1,6 +1,6 @@
 <template>
   <!--Navbar-->
-  <mdb-navbar color="indigo" dark>
+  <mdb-navbar class="unique-color-dark" dark>
     <!-- Navbar brand -->
     <mdb-navbar-brand href="https://mdbootstrap.com/">DRTV</mdb-navbar-brand>
     <mdb-navbar-toggler>
