@@ -161,9 +161,10 @@ app.post("/watchlist", async(request, response)=>{
       watchlist: firebaseAdmin.firestore.FieldValue.arrayUnion(userWatchlist)
     });
     console.log(arrUnion)
-    response.json({
-      watchlist: userWatchlist
-    });
+    // response.json({
+    //   userWatchlist
+    // });
+    response.send(userWatchlist)
 
     response.end();
   } catch (error) {
