@@ -19,28 +19,33 @@ import Footer from "./components/Footer";
 
 export default {
   name: "app",
+  data() {
+    return {
+      user: []
+    }
+  },
   components: {
     Home,
     Header,
     Footer
   },
   updated() {
-    if (this.$route.path === "/search") {
-      document.querySelector("body").classList.add("search");
-    } else if (this.$route.path === "/account") {
-      document.querySelector("body").classList.add("account");
-    } else {
-      document.querySelector("body").classList.add("main");
-    }
+    // if (this.$route.path === "/search") {
+    //   document.querySelector("body").classList.add("search");
+    // } else if (this.$route.path === "/account") {
+    //   document.querySelector("body").classList.add("account");
+    // } else {
+    //   document.querySelector("body").classList.add("main");
+    // }
   },
   mounted() {
-    if (this.$route.path === "/search") {
-      document.querySelector("body").classList.add("search");
-    } else if (this.$route.path === "/account") {
-      document.querySelector("body").classList.add("search");
-    } else {
-      document.querySelector("body").classList.add("main");
-    }
+    // if (this.$route.path === "/search") {
+    //   document.querySelector("body").classList.add("search");
+    // } else if (this.$route.path === "/account") {
+    //   document.querySelector("body").classList.add("search");
+    // } else {
+    //   document.querySelector("body").classList.add("main");
+    // }
   }
 };
 </script>
@@ -55,6 +60,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 input#txtSearchMedia {

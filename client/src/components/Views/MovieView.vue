@@ -1,27 +1,33 @@
 <template>
-  <div v-if="movieData" class="container">
-    <div class="movie-poster mb-4" v-bind:style="{backgroundImage: `url(${movieData.data.poster}`}">
+  <div class="container">
+    <div class="movie-poster mb-4" v-bind:style="{backgroundImage: `url(${movieData && movieData.data ? movieData.data.poster : ''}`}">
       <div class="play-wrapper">
         <div class="play"></div>
       </div>
     </div>
-    <SignupAd class="mb-4"/>
-    <mdb-row class="movie-details-header">
+    <SignupAd v-if="!isLoggedIn" class="mb-4"/>
+    <mdb-row v-if="movieData && movieData.data" class="movie-details-header">
       <mdb-col md="8">
         <h1 class="movie-title">{{movieData.data.title}}</h1>
       </mdb-col>
       <mdb-col md="4" class="users-rating">
-        <span>
-          <mdb-icon icon="thumbs-up"/>
-          <p>{{movieData.data.likes}}</p>
-        </span>
-        <span>
-          <mdb-icon icon="thumbs-down"/>
-          <p>{{movieData.data.dislikes}}</p>
-        </span>
+
+        <mdb-btn flat class="white-text">
+          <span>
+            <mdb-icon icon="thumbs-up"/>
+            <p>{{movieData.data.likes}}</p>
+          </span>
+        </mdb-btn>
+        <mdb-btn flat class="white-text">
+          <span>
+            <mdb-icon icon="thumbs-down"/>
+            <p>{{movieData.data.dislikes}}</p>
+          </span>
+        </mdb-btn>
+
       </mdb-col>
     </mdb-row>
-    <div class="container">
+    <div v-if="movieData && movieData.data" class="container">
       <MovieInfo v-bind:movie="movieData"/>
     </div>
   </div>
@@ -38,7 +44,8 @@ import {
   mdbCardBody,
   mdbCardUp,
   mdbAvatar,
-  mdbIcon
+  mdbIcon,
+  mdbBtn,
 } from "mdbvue";
 import axios from "axios";
 
@@ -53,13 +60,13 @@ export default {
     mdbCardUp,
     mdbAvatar,
     mdbIcon,
+    mdbBtn,
     MovieInfo,
-    SignupAd
+    SignupAd,
   },
   data() {
     return {
-      movieID: "",
-      movieData: ""
+      movieID: ""
     };
   },
 
@@ -70,16 +77,23 @@ export default {
   // beforeDestroy() {
   //   document.querySelector("footer").classList.remove("footer-view");
   // },
-
-  mounted() {
-    this.movieID = this.$route.params.id;
-    const ID = this.movieID;
-    axios
-      .get(`https://drtv-ab06b.firebaseapp.com/api/movies/${ID}`)
-      .then(response => (this.movieData = response.data));
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    },
+    movieData() {
+      return this.$store.getters.fetchedMovie;
+    }
   },
 
-  created() {
+  mounted() {
+    
+  },
+
+  beforeCreate() {
+    this.movieID = this.$route.params.id;
+    let payload = this.movieID
+    this.$store.dispatch("fetchMovie", payload)
     // this.movieID = this.$route.params.id;
     // console.log(this.movieID);
     // this.registerUser();
@@ -88,13 +102,12 @@ export default {
     // document.querySelector("footer").classList.add("footer-view");
   },
 
+  beforeDestroy() {
+    this.$store.dispatch("resetMovie");
+  },
+
   methods: {
-    registerUser() {
-      let payload = {
-        id: this.movieID
-      };
-      this.$store.dispatch("fetchMovie", payload);
-    }
+    
   }
 };
 </script>
@@ -121,11 +134,8 @@ div.container {
 
       p {
         padding-left: 10px;
+        margin: 0;
         font-weight: 400;
-      }
-
-      .fa-thumbs-down {
-        padding-left: 30px;
       }
 
       span {

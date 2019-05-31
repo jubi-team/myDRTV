@@ -2,7 +2,7 @@
   <div>
     <h3>Movies</h3>
     <MediaCarousel class="mb-4"/>
-    <SignupAd class="mb-4"/>
+    <SignupAd v-if="!isLoggedIn" class="mb-4"/>
     <MediaCarousel class="mb-4"/>
   </div>
 </template>
@@ -22,8 +22,11 @@ export default {
   },
 
   computed: {
-    getUser() {
-      return this.$store.state.movies;
+    // getUser() {
+    //   return this.$store.state.movies;
+    // }
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
     }
   },
 

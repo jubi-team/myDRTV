@@ -12,7 +12,10 @@
             </mdb-col>
             <mdb-col col="6" class="d-flex flex-column justify-content-start align-items-center">
                 <p class="white-text text-center mt-2">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable.</p>
-                <mdb-btn color="primary">Try a free month now</mdb-btn>
+                
+                <router-link to="/register">
+                    <mdb-btn color="primary">Try a free month now</mdb-btn>
+                </router-link>
             </mdb-col>
         </mdb-row>
         </mdb-container>
