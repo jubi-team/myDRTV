@@ -74,6 +74,8 @@ app.post("/user", async (request, response) => {
       name,
       email,
       password,
+      likes:[],
+      dislikes:[],
       watchlist: []
     };
 
@@ -161,9 +163,7 @@ app.post("/watchlist", async(request, response)=>{
       watchlist: firebaseAdmin.firestore.FieldValue.arrayUnion(userWatchlist)
     });
     console.log(arrUnion)
-    // response.json({
-    //   userWatchlist
-    // });
+  
     response.send(userWatchlist)
 
     response.end();
@@ -171,3 +171,32 @@ app.post("/watchlist", async(request, response)=>{
     response.status(500).send(error);
   }
 })
+
+
+app.post("/watchlist/likes", async(request, response)=>{
+  const movieID = request.body.movieID;
+
+  try {
+    const firebaseAdmin = require('firebase-admin');
+    const likesRef = db.collection('movies').doc(movieID);
+
+    // Atomically increment the like of the movie by 1.
+    const popIncrement = likesRef.update({
+      likes: firebaseAdmin.firestore.FieldValue.increment(1)
+    });
+
+    return popIncrement.then(res => {
+      if(res){
+        response.send({"status":1, "message":"like added"})
+      } else {
+        response.send({"status":0, "message":"like not added"})
+      }
+    });
+
+  } catch (error) {
+    response.status(500).send(error);
+  }
+})
+
+
+
