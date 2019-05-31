@@ -8,19 +8,22 @@
         <mdb-nav-item active>
           <router-link to="/home">Home</router-link>
         </mdb-nav-item>
-        <mdb-nav-item>
+        <mdb-nav-item  v-if="isLoggedIn">
           <router-link to="/watchlist">Watchlist</router-link>
         </mdb-nav-item>
-        <mdb-nav-item>
+        <mdb-nav-item v-if="!isLoggedIn">
           <router-link to="/login">Login</router-link>
         </mdb-nav-item>
-        <mdb-nav-item>
+        <mdb-nav-item v-if="!isLoggedIn">
           <router-link to="/register">Register</router-link>
+        </mdb-nav-item>
+        <mdb-nav-item v-if="isLoggedIn" v-on:click.native="logoutUser">
+          Logout
         </mdb-nav-item>
         <!-- User Account -->
       </mdb-navbar-nav>
 
-      <router-link to="/account">
+      <router-link v-if="isLoggedIn" to="/account">
         <mdb-icon icon="user"/>
       </router-link>
       <!-- Search  -->
@@ -64,6 +67,17 @@ export default {
     mdbFormInline,
     mdbInput,
     mdbIcon
+  },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn;
+    }
+  },
+  methods: {
+    logoutUser() {
+      this.$store.dispatch("logoutUser")
+      this.$router.push('/')
+    }
   }
 };
 </script>
@@ -73,18 +87,8 @@ export default {
 #header {
   margin-bottom: 70px;
 }
-body.search {
-  nav {
-    background-color: transparent !important;
-    box-shadow: none;
-    color: #fff;
-  }
-
-  // #navbarSupportedContent {
-  //   a {
-  //     color: black;
-  //   }
-  // }
+nav {
+  width: 100%;
 }
 
 .nav-link {

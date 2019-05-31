@@ -1,6 +1,3 @@
-template
-script
-style
 <template>
   <div>
     <mdb-form-inline class="md-form">
@@ -24,11 +21,31 @@ export default {
   },
   data() {
     return {};
+  },
+  created() {
+    console.log(this.$parent.$root)
   }
 };
 </script>
 
 <style lang="scss" scoped>
+
+
+  // nav.unique-color-dark.navbar.navbar-dark{
+  //   background-color: transparent !important;
+  //   box-shadow: none;
+  //   color: #fff;
+  //   background: pink;
+  // }
+
+  // #navbarSupportedContent {
+  //   a {
+  //     color: black;
+  //   }
+  // }
+
+
+
 .md-form {
   width: 100%;
   position: relative;
