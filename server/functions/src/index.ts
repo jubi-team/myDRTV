@@ -172,31 +172,70 @@ app.post("/watchlist", async(request, response)=>{
   }
 })
 
-
-app.post("/watchlist/likes", async(request, response)=>{
+app.post("/movie-likes", async(request, response)=>{
+  const userID = request.body.userID;
   const movieID = request.body.movieID;
+  const userRef = db.collection('users').doc(userID);
+  const firebaseAdmin = require('firebase-admin');
+  const movieRef = db.collection('movies').doc(movieID);
 
-  try {
-    const firebaseAdmin = require('firebase-admin');
-    const likesRef = db.collection('movies').doc(movieID);
+    try {
+      // Atomically increment the like of the movie by 1.
+      const popIncrement = movieRef.update({
+        likes: firebaseAdmin.firestore.FieldValue.increment(1)
+      });
 
-    // Atomically increment the like of the movie by 1.
-    const popIncrement = likesRef.update({
-      likes: firebaseAdmin.firestore.FieldValue.increment(1)
-    });
+      const addLike = userRef.update({
+        likes: firebaseAdmin.firestore.FieldValue.arrayUnion(movieID)
+      });
 
-    return popIncrement.then(res => {
-      if(res){
-        response.send({"status":1, "message":"like added"})
-      } else {
-        response.send({"status":0, "message":"like not added"})
-      }
-    });
+      const removeDisLike = userRef.update({
+        dislikes: firebaseAdmin.firestore.FieldValue.arrayRemove(movieID)
+      });
 
+  
+      return Promise.all([popIncrement,addLike, removeDisLike]).then(res => {
+        response.send("movie like successfully added")
+      });
+ 
   } catch (error) {
     response.status(500).send(error);
   }
 })
+
+
+app.post("/movie-dislikes", async(request, response)=>{
+  const userID = request.body.userID;
+  const movieID = request.body.movieID;
+  const userRef = db.collection('users').doc(userID);
+  const firebaseAdmin = require('firebase-admin');
+  const movieRef = db.collection('movies').doc(movieID);
+
+  
+    try {
+      const popIncrement = movieRef.update({
+        dislikes: firebaseAdmin.firestore.FieldValue.increment(1)
+      });
+
+      const addDislike = userRef.update({
+        dislikes: firebaseAdmin.firestore.FieldValue.arrayUnion(movieID)
+      });
+
+      const removeLike = userRef.update({
+        likes: firebaseAdmin.firestore.FieldValue.arrayRemove(movieID)
+      });
+
+  
+      return Promise.all([popIncrement, addDislike, removeLike]).then(res => {
+        response.send("movie dislike successfully added")
+      });
+ 
+  } catch (error) {
+    response.status(500).send(error);
+  }
+})
+
+
 
 
 
