@@ -12,7 +12,7 @@
       </mdb-col>
       <mdb-col md="4" class="users-rating">
 
-        <mdb-btn flat class="white-text">
+        <mdb-btn flat class="white-text" v-on:click="thumbsUp">
           <span>
             <mdb-icon icon="thumbs-up"/>
             <p>{{movieData.data.likes}}</p>
@@ -107,7 +107,9 @@ export default {
   },
 
   methods: {
-    
+    thumbsUp() {
+      this.$store.dispatch("thumbsUp");
+    }
   }
 };
 </script>
