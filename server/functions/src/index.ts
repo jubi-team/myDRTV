@@ -25,7 +25,7 @@ app.get("/warmup", (request, response) => {
 app.get("/movies", async (request, response) => {
   try {
     const moviesCollection = await db.collection("movies").get();
-    let movies: any = [];
+    const movies: any = [];
     moviesCollection.forEach(doc => {
       movies.push({
         id: doc.id,
@@ -73,7 +73,10 @@ app.post("/user", async (request, response) => {
     const data = {
       name,
       email,
-      password
+      password,
+      likes:[],
+      dislikes:[],
+      watchlist: []
     };
 
     const userRef = await db.collection("users").add(data);
@@ -113,10 +116,6 @@ app.get("/users/:email", async (request, response) => {
       });
     });
 
-    // response.json({
-    //   data: user.docs
-    // });
-
   } catch (error) {
     response.status(500).send(error);
   }
@@ -141,3 +140,63 @@ app.get("/users", async (request, response) => {
     response.status(500).send(error);
   }
 });
+
+app.post("/watchlist", async(request, response)=>{
+  try {
+    const userID = request.body.id;
+    const movieID = request.body.movieID;
+    const movieTitle = request.body.movieTitle;
+    const moviePoster = request.body.moviePoster;
+    
+    const userWatchlist = {
+      movieID:movieID,
+      title:movieTitle,
+      poster: moviePoster
+    };
+
+    const userRef = await db.collection("users").doc(userID)
+   
+    const firebaseAdmin = require('firebase-admin');
+    
+    // Atomically add a new movie to the "watchlist" array field.
+    const arrUnion = userRef.update({
+      watchlist: firebaseAdmin.firestore.FieldValue.arrayUnion(userWatchlist)
+    });
+    console.log(arrUnion)
+  
+    response.send(userWatchlist)
+
+    response.end();
+  } catch (error) {
+    response.status(500).send(error);
+  }
+})
+
+
+app.post("/watchlist/likes", async(request, response)=>{
+  const movieID = request.body.movieID;
+
+  try {
+    const firebaseAdmin = require('firebase-admin');
+    const likesRef = db.collection('movies').doc(movieID);
+
+    // Atomically increment the like of the movie by 1.
+    const popIncrement = likesRef.update({
+      likes: firebaseAdmin.firestore.FieldValue.increment(1)
+    });
+
+    return popIncrement.then(res => {
+      if(res){
+        response.send({"status":1, "message":"like added"})
+      } else {
+        response.send({"status":0, "message":"like not added"})
+      }
+    });
+
+  } catch (error) {
+    response.status(500).send(error);
+  }
+})
+
+
+
