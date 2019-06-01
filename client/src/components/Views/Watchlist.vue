@@ -1,18 +1,14 @@
 
 <template>
   <div>
-    <h1>Watchlist</h1>
+    <h1 class="white-text">Watchlist</h1>
     <div class="listContainer">
-      <!-- <div class="container">
-        <div class="row"> -->
         <WatchlistItem 
           v-for="(listItem, index) in watchlist.slice().reverse()"
           v-bind:listItem="listItem"
           v-bind:key="listItem.id"
           v-bind:index="index"
         />
-        <!-- </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -32,18 +28,26 @@ export default {
       return this.$store.getters.fetchedUser.data.watchlist;
     }
   },
-  mounted() {
-    console.log(this.watchlist)
-  }
 };
 </script>
 
 <style lang="scss" scoped>
-  .listContainer{
-    display: grid;
-    // grid-auto-columns: auto auto;
-    grid-template-columns: auto auto auto;
-    grid-column-gap: 10px;
-    grid-row-gap: 10px;
+.listContainer{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
+}
+
+@media screen and (min-width: 600px) and (max-width: 767px) {
+  .listContainer {
+    grid-template-columns: 1fr 1fr;
   }
+}
+
+@media screen and (max-width: 599px) {
+  .listContainer {
+    grid-template-columns: 1fr;
+  }
+}
 </style>
