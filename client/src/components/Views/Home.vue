@@ -1,8 +1,12 @@
 <template>
   <div>
-    <h3>Movies</h3>
-    <MediaCarousel class="mb-4" v-bind:genre="'Comedy'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'added'" v-bind:header="'Recently Added'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'release'" v-bind:header="'New Releases'"/>
     <SignupAd v-if="!isLoggedIn" class="mb-4"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'comedy'" v-bind:header="'Comedy'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'action'" v-bind:header="'Action'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'drama'" v-bind:header="'Drama'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'adventure'" v-bind:header="'Adventure'"/>
     <!-- <MediaCarousel class="mb-4" v-bind:genre="'Action'"/>
     <MediaCarousel class="mb-4"/>
     <MediaCarousel class="mb-4"/> -->

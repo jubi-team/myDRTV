@@ -3,16 +3,12 @@
   <div>
     <h1>Watchlist</h1>
     <div class="listContainer">
-      <!-- <div class="container">
-        <div class="row"> -->
         <WatchlistItem 
           v-for="(listItem, index) in watchlist.slice().reverse()"
           v-bind:listItem="listItem"
           v-bind:key="listItem.id"
           v-bind:index="index"
         />
-        <!-- </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -32,9 +28,9 @@ export default {
       return this.$store.getters.fetchedUser.data.watchlist;
     }
   },
-  mounted() {
-    console.log(this.watchlist)
-  }
+  // mounted() {
+  //   console.log(this.watchlist)
+  // }
 };
 </script>
 

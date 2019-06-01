@@ -1,10 +1,10 @@
 <template>
   <div>
+    <h3 v-if="header" class="white-text">{{header}}</h3>
     <mdb-container>
-      <mdb-row class="carouselContainer" v-if="testMovies">
-          <!-- v-for="(movie, index) in $store.getters.fetchedMovies.filter(item => item.genre.includes(genre)).slice(0,4)" -->
+      <mdb-row class="carouselContainer" v-if="allMovies">
         <MediaItem
-          v-for="(movie, index) in testMovies"
+          v-for="(movie, index) in sortedMovies.slice(0,4)"
           v-bind:movie="movie"
           v-bind:key="movie.id"
           v-bind:index="index"
@@ -14,7 +14,6 @@
     </mdb-container>
   </div>
 </template>
-
 
 <script>
 import { mdbContainer, mdbRow, mdbCol } from "mdbvue";
@@ -27,86 +26,55 @@ export default {
     mdbCol,
     MediaItem
   },
-  props: ['genre'],
+  props: ['genre','header'],
   data() {
     return {
-      test: []
+      // sortedMovies
+      sortedMovies: []
     }
   },
+
   watch: {
-    testMovies: function() {
-      this.noodles()
+    allMovies: function() {
+      // console.log("ALL MOVES CHANGED")
+      this.sortMovies()
+      // this.sortMovies = this.allMovies
     },
-    // testMovies: function() {
-    //   if(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres && this.testMovies[0].data.genres[0]) {
-    //     this.blaTest()
-    //   }
-    // },
-    // testMovies: function() {
-    //   // this.isInWatchlist()
-    //   console.log('WATCH')
-    //   // console.log(this.testMovies)
-    //   if(this.testMovies.data && this.testMovies.data.genres) {
-    //   this.test = this.testMovies.data.genres.filter(function(item) {
-    //     // console.log(item.data.genres)
-    //     // return item.data.genres.includes('comedy') ? true : false;
-    //     return item.data.genres[0] == 'Thriller' ? true : false;
-    //   })
-    //   }
+    // sortedMovies: function() {
+    //   console.log("SORTED MOVES CHANGED")
+    //   // this.sortMovies()
     // },
   },
 
   computed: {
-    testMovies() {
-      console.log('testmovies top')
-      // console.log(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres ? 'JÁ GENRES' : 'NEI GENRES')
-      // this.$store.getters.fetchedMovies.filter(item => console.log(item.data.genres.includes('comedy')))
+    allMovies() {
       return this.$store.getters.fetchedMovies
-      // return await this.$store.getters.fetchedMovies.filter(function(item) {
-      //   console.log(item.data.genres)
-      //   return item.data.genres.includes('comedy') ? true : false;
-      //   // return item.data.genres[0] == 'Thriller' ? true : false;
-      // })
     },
-    
+    // sortedMovies() {
+    //   return this.$store.getters.fetchedMovies
+    // },
+    // sortedMovies() {
+    //   return this.sortedMovies
+    // },
   },
 
   methods: {
-    blaTest() {
-      // if(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres && this.testMovies[0].data.genres[0]) {
-      //   this.testMovies.filter(function(item) {
-      //     item.data.genres.includes('comedy') ? console.log('JÁ ', item) : console.log('NEI ', item)
-      //   //   console.log(item.data.genres)
-      //     // return item.data.genres.includes('comedy') ? true : false;
-      //     // return item.data.genres[0] == 'Thriller' ? true : false;
-      //   })
-      // }else{
-      //   console.log('ekki genres!!!')
-      // }
-    },
-    isInWatchlist() {
-      this.testMovies.forEach(item => {
-        console.log(item)
-        // if(item.movieID == this.movieData.id) {
-        //   this.inWatchlist = true;
-        // }
-      })
-    },
+    sortMovies() {
+      if(this.genre == 'added') {
+        this.sortedMovies = this.allMovies.filter(item => item.data.date_added)
+        this.sortedMovies.sort((b, a) => a.data.date_added._seconds - b.data.date_added._seconds );
+      }
+      else if(this.genre == 'release') {
+        this.sortedMovies = this.allMovies.filter(item => item.data.release_year)
+        this.sortedMovies.sort((b, a) => a.data.release_year - b.data.release_year );
+      }
+      else{
+        this.sortedMovies = this.allMovies.filter(item => item.data.genres && item.data.genres.includes(this.genre)).slice(0,4)
+      }
+    }
   }
-
-  // mounted() {
-  //   console.log(this.genre)
-  //   // this.test = this.$store.getters.fetchedMovies
-  //   // this.test = this.$store.getters.fetchedMovies.filter(item => console.log(item.data.genres[0].toLowerCase()))
-  //   // this.test = this.$store.getters.fetchedMovies.filter(item => {return item.data.genres.includes('comedy') ? true : false})
-  //   this.test = this.$store.getters.fetchedMovies.filter(function(item) {
-  //     // console.log(item.data.genres)
-  //     // return item.data.genres.includes('comedy') ? true : false;
-  //     return item.data.genres[0] == 'Thriller' ? true : false;
-  //   });
-  //   console.log(this.test)
-  // }
 };
+
 </script>
 
 <style lang="css" scoped>
