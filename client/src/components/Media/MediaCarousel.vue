@@ -39,12 +39,12 @@ export default {
     },
     sortedMovies() {
       if(this.genre == 'added') {
-        var shittur = this.allMovies.filter(item => item.data.date_added)
-        return shittur.sort((b, a) => a.data.date_added._seconds - b.data.date_added._seconds );
+        const filteredMovies = this.allMovies.filter(item => item.data.date_added)
+        return filteredMovies.sort((b, a) => a.data.date_added._seconds - b.data.date_added._seconds );
       }
       else if(this.genre == 'release') {
-        var shittur = this.allMovies.filter(item => item.data.release_year)
-        return shittur.sort((b, a) => a.data.release_year - b.data.release_year );
+        const filteredMovies = this.allMovies.filter(item => item.data.release_year)
+        return filteredMovies.sort((b, a) => a.data.release_year - b.data.release_year );
       }
       else{
         /* CASE SENSITIVE SOLUTION */
