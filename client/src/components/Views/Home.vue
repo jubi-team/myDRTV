@@ -1,9 +1,11 @@
 <template>
   <div>
     <h3>Movies</h3>
-    <MediaCarousel class="mb-4"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'Comedy'"/>
     <SignupAd v-if="!isLoggedIn" class="mb-4"/>
+    <!-- <MediaCarousel class="mb-4" v-bind:genre="'Action'"/>
     <MediaCarousel class="mb-4"/>
+    <MediaCarousel class="mb-4"/> -->
   </div>
 </template>
 
