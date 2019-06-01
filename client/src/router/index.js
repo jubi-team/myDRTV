@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Home from "@/components/Views/Home";
 import MovieView from "@/components/Views/MovieView";
 import Search from "@/components/Views/Search";
-import WatchList from "@/components/Views/WatchList";
+import Watchlist from "@/components/Views/Watchlist";
 import Account from "@/components/Views/Account";
 import Register from "@/components/Views/Register";
 import Login from "@/components/Views/Login";
@@ -33,8 +33,8 @@ export default new Router({
     },
     {
       path: "/watchlist",
-      name: "WatchList",
-      component: WatchList
+      name: "Watchlist",
+      component: Watchlist
     },
     {
       path: "/account",
