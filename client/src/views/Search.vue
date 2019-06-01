@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import MovieInfo from "../Media/MovieInfo";
+import MovieInfo from "../components/Media/MovieInfo";
 import { mdbIcon, mdbFormInline, mdbInput } from "mdbvue";
 
 export default {

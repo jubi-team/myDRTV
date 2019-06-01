@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import MovieInfo from "../Media/MovieInfo";
-import SignupAd from "../Components/SignupAd";
+import MovieInfo from "../components/Media/MovieInfo";
+import SignupAd from "../components/SignupAd";
 import {
   mdbContainer,
   mdbRow,

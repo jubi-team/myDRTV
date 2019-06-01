@@ -13,7 +13,7 @@
 import "bootstrap-css-only/css/bootstrap.min.css";
 import "mdbvue/build/css/mdb.css";
 // import HelloWorld from "./components/HelloWorld.vue";
-import Home from "./components/Views/Home";
+import Home from "./views/Home";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 

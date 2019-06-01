@@ -34,9 +34,8 @@ export default {
 
 .media-item {
   width: 100%;
-  height: 120px;
+  padding-top: 60%;
   background-size: cover;
-  border: 1px solid #fff;
 }
 
 .play-wrapper {
