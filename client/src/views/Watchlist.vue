@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import WatchlistItem from "../Components/WatchlistItem";
+import WatchlistItem from "../components/WatchlistItem";
 export default {
   name: "Watchlist",
   components: {

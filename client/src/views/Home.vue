@@ -8,8 +8,8 @@
 </template>
 
 <script>
-import MediaCarousel from "../Media/MediaCarousel";
-import SignupAd from "../Components/SignupAd";
+import MediaCarousel from "../components/Media/MediaCarousel";
+import SignupAd from "../components/SignupAd";
 export default {
   name: "Home",
   components: {
