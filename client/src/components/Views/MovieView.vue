@@ -7,19 +7,25 @@
     </div>
     <SignupAd v-if="!isLoggedIn" class="mb-4"/>
     <mdb-row v-if="movieData && movieData.data" class="movie-details-header">
-      <mdb-col md="8">
+      <mdb-col md="6">
         <h1 class="movie-title">{{movieData.data.title}}</h1>
       </mdb-col>
-      <mdb-col md="4" class="users-rating">
-
-        <mdb-btn flat class="white-text" v-on:click="thumbsUp">
-          <span>
+      <mdb-col md="6" class="users-rating">
+        <mdb-btn flat class="white-text" v-on:click="addToWatchlist" v-if="isLoggedIn">
+          <span v-bind:class="{'green-text':inWatchlist}">
+            <mdb-icon icon="plus" v-if="!inWatchlist"/>
+            <mdb-icon icon="check" v-if="inWatchlist"/>
+            <p>Watchlist</p>
+          </span>
+        </mdb-btn>
+        <mdb-btn flat class="white-text" v-on="{'click': isLoggedIn ? clickLike : mustLogin}" v-bind:disabled="!isLoggedIn">
+          <span v-bind:class="{'green-text':likes.includes(movieData.id)}">
             <mdb-icon icon="thumbs-up"/>
             <p>{{movieData.data.likes}}</p>
           </span>
         </mdb-btn>
-        <mdb-btn flat class="white-text">
-          <span>
+        <mdb-btn flat class="white-text" v-on="{'click': isLoggedIn ? clickDislike : mustLogin}" v-bind:disabled="!isLoggedIn">
+          <span v-bind:class="{'red-text':dislikes.includes(movieData.id)}">
             <mdb-icon icon="thumbs-down"/>
             <p>{{movieData.data.dislikes}}</p>
           </span>
@@ -66,7 +72,8 @@ export default {
   },
   data() {
     return {
-      movieID: ""
+      movieID: "",
+      inWatchlist: false,
     };
   },
 
@@ -83,23 +90,38 @@ export default {
     },
     movieData() {
       return this.$store.getters.fetchedMovie;
+    },
+    userId() {
+      return this.isLoggedIn ? this.$store.getters.fetchedUser.id : undefined;
+    },
+    watchlist() {
+      return this.isLoggedIn ? this.$store.getters.fetchedUser.data.watchlist : [];
+    },
+    likes() {
+      return this.isLoggedIn ? this.$store.getters.fetchedUser.data.likes : [];
+    },
+    dislikes() {
+      return this.isLoggedIn ? this.$store.getters.fetchedUser.data.dislikes : [];
+    }
+  },
+
+  watch: {
+    movieData: function() {
+      this.isInWatchlist()
+    },
+    watchlist: function() {
+      this.isInWatchlist()
     }
   },
 
   mounted() {
-    
+
   },
 
   beforeCreate() {
     this.movieID = this.$route.params.id;
     let payload = this.movieID
     this.$store.dispatch("fetchMovie", payload)
-    // this.movieID = this.$route.params.id;
-    // console.log(this.movieID);
-    // this.registerUser();
-    // this.movieData = this.$store.state.movie;
-    // const jMovie = this.$store.getters.fetchedMovie;
-    // document.querySelector("footer").classList.add("footer-view");
   },
 
   beforeDestroy() {
@@ -107,8 +129,84 @@ export default {
   },
 
   methods: {
-    thumbsUp() {
-      this.$store.dispatch("thumbsUp");
+    clickLike() {
+      if(this.dislikes.includes(this.movieData.id)) {
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("removeDislike", payload)
+      }
+      if(this.likes.includes(this.movieData.id)) {
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("removeLike", payload)
+      }else{
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("addLike", payload)
+      }
+    },
+
+    clickDislike() {
+      if(this.likes.includes(this.movieData.id)) {
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("removeLike", payload)
+      }
+      if(this.dislikes.includes(this.movieData.id)) {
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("removeDislike", payload)
+      }else{
+        let payload = {
+          userID: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("addDislike", payload)
+      }
+    },
+
+    async addToWatchlist() {
+      if(this.inWatchlist) {
+        let payload = {
+          id: this.userId,
+          movieID: this.movieData.id,
+        }
+        this.$store.dispatch("removeFromWatchlist", payload)
+        this.inWatchlist = false
+      }else{
+        let payload = {
+          id: this.userId,
+          movieID: this.movieData.id,
+          movieTitle: this.movieData.data.title,
+          moviePoster: this.movieData.data.poster
+        }
+        await this.$store.dispatch("addToWatchlist", payload).then((res) => {
+          this.inWatchlist = res ? true : false
+        })
+      }
+    },
+
+    isInWatchlist() {
+      this.watchlist.forEach(item => {
+        if(item.movieID == this.movieData.id) {
+          this.inWatchlist = true;
+        }
+      })
+    },
+
+    mustLogin() {
+      // todo: create a notification? tell user to login!
+      console.log('not logged in')
     }
   }
 };

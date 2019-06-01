@@ -1,9 +1,10 @@
 <template>
   <mdb-col
     class="media-item"
-    v-bind:style="{backgroundImage: `url(${movieItem.data.poster})`}"
+    
+    v-bind:style="{backgroundImage: `url(${listItem.poster})`}"
   >
-    <router-link v-bind:to="{name: 'MovieView', params: { id: movieItem.id }}">
+    <router-link v-bind:to="{name: 'MovieView', params: { id: listItem.movieID }}">
       <div class="play-wrapper">
         <div class="play"></div>
       </div>
@@ -16,16 +17,20 @@
 import { mdbCol } from "mdbvue";
 
 export default {
-  name: "MediaItem",
+  name: "WatchlistItem",
   components: {
     mdbCol
   },
-  props: ["movie"],
+  props: ["listItem"],
 
   data() {
     return {
-      movieItem: this.movie
+    //   listItem: this.listItem
     };
+  },
+
+  mounted() {
+      console.log(this.listItem)
   }
 };
 </script>
@@ -34,9 +39,8 @@ export default {
 
 .media-item {
   width: 100%;
-  height: 120px;
+  padding-top: 60%;
   background-size: cover;
-  border: 1px solid #fff;
 }
 
 .play-wrapper {
