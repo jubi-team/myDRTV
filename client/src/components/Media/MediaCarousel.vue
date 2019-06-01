@@ -2,7 +2,7 @@
   <div>
     <h3 v-if="header" class="white-text">{{header}}</h3>
     <mdb-container>
-      <mdb-row class="carouselContainer" v-if="allMovies">
+      <mdb-row class="carouselContainer" v-if="sortedMovies">
         <MediaItem
           v-for="(movie, index) in sortedMovies.slice(0,4)"
           v-bind:movie="movie"
@@ -29,50 +29,33 @@ export default {
   props: ['genre','header'],
   data() {
     return {
-      // sortedMovies
-      sortedMovies: []
-    }
-  },
 
-  watch: {
-    allMovies: function() {
-      // console.log("ALL MOVES CHANGED")
-      this.sortMovies()
-      // this.sortMovies = this.allMovies
-    },
-    // sortedMovies: function() {
-    //   console.log("SORTED MOVES CHANGED")
-    //   // this.sortMovies()
-    // },
+    }
   },
 
   computed: {
     allMovies() {
       return this.$store.getters.fetchedMovies
     },
-    // sortedMovies() {
-    //   return this.$store.getters.fetchedMovies
-    // },
-    // sortedMovies() {
-    //   return this.sortedMovies
-    // },
-  },
-
-  methods: {
-    sortMovies() {
+    sortedMovies() {
       if(this.genre == 'added') {
-        this.sortedMovies = this.allMovies.filter(item => item.data.date_added)
-        this.sortedMovies.sort((b, a) => a.data.date_added._seconds - b.data.date_added._seconds );
+        var shittur = this.allMovies.filter(item => item.data.date_added)
+        return shittur.sort((b, a) => a.data.date_added._seconds - b.data.date_added._seconds );
       }
       else if(this.genre == 'release') {
-        this.sortedMovies = this.allMovies.filter(item => item.data.release_year)
-        this.sortedMovies.sort((b, a) => a.data.release_year - b.data.release_year );
+        var shittur = this.allMovies.filter(item => item.data.release_year)
+        return shittur.sort((b, a) => a.data.release_year - b.data.release_year );
       }
       else{
-        this.sortedMovies = this.allMovies.filter(item => item.data.genres && item.data.genres.includes(this.genre)).slice(0,4)
+        /* CASE SENSITIVE SOLUTION */
+        // return this.allMovies.filter(item => item.data.genres && item.data.genres.includes(this.genre)).slice(0,4)
+
+        /* CASE INSENSITIVE SOLUTION */
+        const that = this
+        return this.allMovies.filter(item => item.data.genres && item.data.genres.some(function(genre){return genre.toLowerCase() == that.genre})).slice(0,4)
       }
-    }
-  }
+    },
+  },
 };
 
 </script>
@@ -80,11 +63,22 @@ export default {
 <style lang="css" scoped>
 
 .carouselContainer {
-  /* height: 200px; */
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
   grid-row-gap: 10px;
+}
+
+@media screen and (min-width: 600px) and (max-width: 767px) {
+  .carouselContainer {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .carouselContainer {
+    grid-template-columns: 1fr;
+  }
 }
 
 </style>

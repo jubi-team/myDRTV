@@ -1,15 +1,12 @@
 <template>
   <div>
-    <MediaCarousel class="mb-4" v-bind:genre="'added'" v-bind:header="'Recently Added'"/>
     <MediaCarousel class="mb-4" v-bind:genre="'release'" v-bind:header="'New Releases'"/>
+    <MediaCarousel class="mb-4" v-bind:genre="'added'" v-bind:header="'Recently Added'"/>
     <SignupAd v-if="!isLoggedIn" class="mb-4"/>
     <MediaCarousel class="mb-4" v-bind:genre="'comedy'" v-bind:header="'Comedy'"/>
     <MediaCarousel class="mb-4" v-bind:genre="'action'" v-bind:header="'Action'"/>
     <MediaCarousel class="mb-4" v-bind:genre="'drama'" v-bind:header="'Drama'"/>
     <MediaCarousel class="mb-4" v-bind:genre="'adventure'" v-bind:header="'Adventure'"/>
-    <!-- <MediaCarousel class="mb-4" v-bind:genre="'Action'"/>
-    <MediaCarousel class="mb-4"/>
-    <MediaCarousel class="mb-4"/> -->
   </div>
 </template>
 
@@ -28,19 +25,12 @@ export default {
   },
 
   computed: {
-    // getUser() {
-    //   return this.$store.state.movies;
-    // }
     isLoggedIn() {
       return this.$store.getters.isLoggedIn;
     }
   },
 
   methods: {
-    filterMovies() {
-      console.log(this.$store.state.movies);
-      // console.log(this.$store.state)
-    }
   }
 };
 </script>
