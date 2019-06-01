@@ -35,8 +35,13 @@ export default {
   },
   watch: {
     testMovies: function() {
-      this.blaTest()
+      this.noodles()
     },
+    // testMovies: function() {
+    //   if(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres && this.testMovies[0].data.genres[0]) {
+    //     this.blaTest()
+    //   }
+    // },
     // testMovies: function() {
     //   // this.isInWatchlist()
     //   console.log('WATCH')
@@ -68,17 +73,25 @@ export default {
 
   methods: {
     blaTest() {
-      if(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres && this.testMovies[0].data.genres[0]) {
-        this.testMovies.filter(function(item) {
-          item.data.genres.includes('comedy') ? console.log('JÁ ', item) : console.log('NEI ', item)
-        //   console.log(item.data.genres)
-          // return item.data.genres.includes('comedy') ? true : false;
-          // return item.data.genres[0] == 'Thriller' ? true : false;
-        })
-      }else{
-        console.log('ekki genres!!!')
-      }
-    }
+      // if(this.testMovies && this.testMovies[0] && this.testMovies[0].data && this.testMovies[0].data.genres && this.testMovies[0].data.genres[0]) {
+      //   this.testMovies.filter(function(item) {
+      //     item.data.genres.includes('comedy') ? console.log('JÁ ', item) : console.log('NEI ', item)
+      //   //   console.log(item.data.genres)
+      //     // return item.data.genres.includes('comedy') ? true : false;
+      //     // return item.data.genres[0] == 'Thriller' ? true : false;
+      //   })
+      // }else{
+      //   console.log('ekki genres!!!')
+      // }
+    },
+    isInWatchlist() {
+      this.testMovies.forEach(item => {
+        console.log(item)
+        // if(item.movieID == this.movieData.id) {
+        //   this.inWatchlist = true;
+        // }
+      })
+    },
   }
 
   // mounted() {
