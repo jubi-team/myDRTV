@@ -5,77 +5,79 @@ import axios from "axios";
 
 Vue.use(Vuex);
 
-const store = new Vuex.Store({
+export const mutations = {
+  FETCH_MOVIES: (state, action) => {
+    state.movies = action.payload;
+  },
+
+  FETCH_MOVIE: (state, action) => {
+    state.movie = action.payload;
+  },
+
+  RESET_MOVIE: (state) => {
+    state.movie = {};
+  },
+
+  ADD_USER: (state, action) => {
+    state.user = action.payload;
+  },
+
+  FETCH_USER: (state, action) => {
+    state.user = action.payload;
+  },
+
+  LOGOUT_USER: (state, action) => {
+    state.user = action.payload;
+  },
+
+  ADD_TO_WATCHLIST: (state, action) => {
+    state.user.data.watchlist.push(action.payload);
+  },
+
+  REMOVE_FROM_WATCHLIST: (state, action) => {
+    state.user.data.watchlist = state.user.data.watchlist.filter(item => item.movieID != action.payload.movieID);
+  },
+
+  ADD_LIKE: (state, action) => {
+    // action.payload.status == 1 ? state.movie.data.likes++ : state.movie.data.likes--
+    state.movie.data.likes++
+    state.user.data.likes.push(action.payload.movieID)
+  },
+
+  REMOVE_LIKE: (state, action) => {
+    state.movie.data.likes--
+    state.user.data.likes = state.user.data.likes.filter(like => like != action.payload.movieID);
+  },
+
+  ADD_DISLIKE: (state, action) => {
+    console.log(action.payload)
+    state.movie.data.dislikes++
+    state.user.data.dislikes.push(action.payload.movieID)
+  },
+
+  REMOVE_DISLIKE: (state, action) => {
+    state.movie.data.dislikes--
+    state.user.data.dislikes = state.user.data.dislikes.filter(dislike => dislike != action.payload.movieID);
+  },
+
+  // THUMBS_UP: (state, action) => {
+  //   state.movie.data.likes = action.payload;
+  // },
+
+  // THUMBS_DOWN: (state, action) => {
+  //   state.user = action.payload;
+  // }
+
+}
+
+export default new Vuex.Store({
   state: {
     movies: [],
     movie: {},
     user: {}
   },
 
-  mutations: {
-    FETCH_MOVIES: (state, action) => {
-      state.movies = action.payload;
-    },
-
-    FETCH_MOVIE: (state, action) => {
-      state.movie = action.payload;
-    },
-
-    RESET_MOVIE: (state) => {
-      state.movie = {};
-    },
-
-    ADD_USER: (state, action) => {
-      state.user = action.payload;
-    },
-
-    FETCH_USER: (state, action) => {
-      state.user = action.payload;
-    },
-
-    LOGOUT_USER: (state, action) => {
-      state.user = action.payload;
-    },
-
-    ADD_TO_WATCHLIST: (state, action) => {
-      state.user.data.watchlist.push(action.payload);
-    },
-
-    REMOVE_FROM_WATCHLIST: (state, action) => {
-      state.user.data.watchlist = state.user.data.watchlist.filter(item => item.movieID != action.payload.movieID);
-    },
-
-    ADD_LIKE: (state, action) => {
-      // action.payload.status == 1 ? state.movie.data.likes++ : state.movie.data.likes--
-      state.movie.data.likes++
-      state.user.data.likes.push(action.payload.movieID)
-    },
-
-    REMOVE_LIKE: (state, action) => {
-      state.movie.data.likes--
-      state.user.data.likes = state.user.data.likes.filter(like => like != action.payload.movieID);
-    },
-
-    ADD_DISLIKE: (state, action) => {
-      console.log(action.payload)
-      state.movie.data.dislikes++
-      state.user.data.dislikes.push(action.payload.movieID)
-    },
-
-    REMOVE_DISLIKE: (state, action) => {
-      state.movie.data.dislikes--
-      state.user.data.dislikes = state.user.data.dislikes.filter(dislike => dislike != action.payload.movieID);
-    },
-
-    // THUMBS_UP: (state, action) => {
-    //   state.movie.data.likes = action.payload;
-    // },
-
-    // THUMBS_DOWN: (state, action) => {
-    //   state.user = action.payload;
-    // }
-
-  },
+  mutations,
 
   actions: {
     fetchMovies({ commit }) {
@@ -110,7 +112,7 @@ const store = new Vuex.Store({
 
     addUser({ commit }, payload) {
       axios
-        .post("https://drtv-ab06b.firebaseapp.com/api/users", payload)
+        .post("https://drtv-ab06b.firebaseapp.com/api/user", payload)
         .then(response => {
           console.log(response);
           commit("ADD_USER", {
@@ -167,7 +169,6 @@ const store = new Vuex.Store({
       commit("REMOVE_FROM_WATCHLIST", {
         payload: payload
       })
-      
     },
 
     addLike({ commit }, payload) {
@@ -241,5 +242,5 @@ const store = new Vuex.Store({
   plugins: [new VuexPersistence().plugin]
 });
 
-export default store;
+// export default store;
 
